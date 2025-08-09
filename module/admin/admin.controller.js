@@ -24,6 +24,23 @@ const registerAdmin = async (req, res) => {
   }
 };
 
+const getManagerById = async(req,res)=>{
+  try{
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: "Manager ID is required." });
+    }
+    const manager = await adminService.getManagerById(id);
+    if (!manager) {
+      return res.status(404).json({ error: "Manager not found." });
+    }
+    res.status(200).json({ manager });
+
+  }catch(error){
+    res.status(500).json({ error: error.message });
+}
+}
+
 module.exports = {
   getAdmins,
   registerAdmin,
