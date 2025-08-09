@@ -19,3 +19,8 @@ const getAllEmployees = async () => {
         });
     }); 
 }
+
+module.exports = {
+    registerEmployee,
+    getAllEmployees
+}
