@@ -43,4 +43,5 @@ const getManagerById = async (req, res) => {
 module.exports = {
   getAdmins,
   registerAdmin,
+  getManagerById
 };
