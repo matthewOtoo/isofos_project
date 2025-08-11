@@ -1,15 +1,15 @@
-const express = require("express");
-const employeeProjectRouter = express.Router();
-const employeeProject = require("./employeeProject.controller");
+// const express = require("express");
+// const employeeProjectRouter = express.Router();
+// const employeeProject = require("./employeeProject.controller");
 
-employeeProjectRouter.get("/", employeeProject.getEmployeeProjects);
-employeeProjectRouter.get(
-  "/employee/:em_id",
-  employeeProject.getProjectsByEmployee
-);
-employeeProjectRouter.get(
-  "/project/:pro_id",
-  employeeProject.getEmployeesByProject
-);
+// employeeProject.get("/", employeeProject.getEmployeesByProject);
+// employeeProject.get(
+//   "/employee/:em_id",
+//   employeeProject.getProjectsByEmployee
+// );
+// employeeProjectRouter.get(
+//   "/project/:pro_id",
+//   employeeProject.getEmployeesByProject
+// );
 
-module.exports = employeeProjectRouter;
+// module.exports = employeeProjectRouter;
