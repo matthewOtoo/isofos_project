@@ -1,9 +1,11 @@
-// const express = require("express");
-// const supplierRouter = express.Router();
-// const supplier = require("./supplier.controller");
+const express = require("express");
+const supplierRouter = express.Router();
+const supplierController = require("./supplier.controller");
 
-// supplierRouter.get("/", supplier.getAllSuppliers);
-// supplierRouter.post("/", supplier.registerSupplier);
-// supplierRouter.get("/:id", supplier.getSupplierById); // Assuming you'll add this method
+supplierRouter.get("/", supplierController.getSuppliers);
+supplierRouter.post("/", supplierController.createSupplier);
+supplierRouter.get("/:id", supplierController.getSupplierById);
+supplierRouter.put("/:id", supplierController.updateSupplier);
+supplierRouter.delete("/:id", supplierController.deleteSupplier);
 
-// module.exports = supplierRouter;
+module.exports = supplierRouter;

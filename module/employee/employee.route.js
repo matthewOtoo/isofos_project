@@ -1,8 +1,8 @@
-// const express = require("express");
-// const employeeRouter = express.Router();
+const express = require("express");
+const employeeRouter = express.Router();
 
-// const employee = require("./employee.controller");
-// employeeRouter.get("/", employee.getAllEmployees);
-// employeeRouter.post("/", employee.registerEmployee); // Add this line
+const employeeController = require("./employee.controller");
+employeeRouter.get("/", employeeController.getAllEmployees);
+employeeRouter.post("/", employeeController.registerEmployee);
 
-// module.exports = employeeRouter;
+module.exports = employeeRouter;

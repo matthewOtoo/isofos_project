@@ -1,45 +1,75 @@
-// const express = require("express");
-// const supplierService = require("./supplier.service");
+const supplierService = require("./supplier.service");
 
-// const getAllSuppliers = async (req, res) => {
-//   try {
-//     const suppliers = await supplierService.getAllSuppliers();
-//     res.status(200).json({ suppliers });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+const getSuppliers = async (req, res) => {
+  try {
+    const suppliers = await supplierService.getAllSuppliers();
+    res.status(200).json({ suppliers });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-// const registerSupplier = async (req, res) => {
-//   try {
-//     const { sup_id, sup_name, sup_email, sup_contact, mat_id } = req.body;
+const createSupplier = async (req, res) => {
+  try {
+    const { name, email, phone, address } = req.body;
+    if (!name || !email) {
+      return res.status(400).json({ error: "Name and email are required." });
+    }
+    const data = { name, email, phone, address };
+    const result = await supplierService.createSupplier(data);
+    res.status(201).json({ message: "Supplier created successfully", result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     if (!sup_id || !sup_name || !sup_contact) {
-//       return res
-//         .status(400)
-//         .json({ error: "Supplier ID, name, and contact are required." });
-//     }
+const getSupplierById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: "Supplier ID is required." });
+    }
+    const supplier = await supplierService.getSupplierById(id);
+    if (!supplier) {
+      return res.status(404).json({ error: "Supplier not found." });
+    }
+    res.status(200).json({ supplier });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     // Validate material ID if provided
-//     if (mat_id) {
-//       const material = await supplierService.getMaterialById(mat_id);
-//       if (!material) {
-//         return res.status(404).json({ error: "Material not found." });
-//       }
-//     }
+const updateSupplier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    if (!id) {
+      return res.status(400).json({ error: "Supplier ID is required." });
+    }
+    const result = await supplierService.updateSupplier(id, data);
+    res.status(200).json({ message: "Supplier updated successfully", result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     const data = { sup_id, sup_name, sup_email, sup_contact, mat_id };
-//     const result = await supplierService.registerSupplier(data);
+const deleteSupplier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: "Supplier ID is required." });
+    }
+    const result = await supplierService.deleteSupplier(id);
+    res.status(200).json({ message: "Supplier deleted successfully", result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     res
-//       .status(201)
-//       .json({ message: "Supplier registered successfully", result });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
-// module.exports = {
-//   getAllSuppliers,
-//   registerSupplier,
-// };
+module.exports = {
+  getSuppliers,
+  createSupplier,
+  getSupplierById,
+  updateSupplier,
+  deleteSupplier
+};

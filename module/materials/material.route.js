@@ -1,9 +1,11 @@
-// const express = require("express");
-// const materialsRouter = express.Router();
-// const materials = require("./materials.controller");
+const express = require("express");
+const materialRouter = express.Router();
+const materialController = require("./material.controller");
 
-// materialsRouter.get("/", materials.getAllMaterials);
-// materialsRouter.post("/", materials.registerMaterial);
-// materialsRouter.get("/:id", materials.getMaterialById); // Assuming you'll add this method
+materialRouter.get("/", materialController.getMaterials);
+materialRouter.post("/", materialController.createMaterial);
+materialRouter.get("/:id", materialController.getMaterialById);
+materialRouter.put("/:id", materialController.updateMaterial);
+materialRouter.delete("/:id", materialController.deleteMaterial);
 
-// module.exports = materialsRouter;
+module.exports = materialRouter;

@@ -1,7 +1,7 @@
 const connection = require("../../config/DBconnect");
 
-const createEmployee = async (data) => {
-  const sql = "INSERT INTO employees SET ?";
+const registerManager = async (data) => {
+  const sql = "INSERT INTO managers SET ?";
   return new Promise((resolve, reject) => {
     connection.query(sql, data, (error, results) => {
       if (error) return reject(error);
@@ -10,8 +10,8 @@ const createEmployee = async (data) => {
   });
 };
 
-const getAllEmployees = async () => {
-  const sql = "SELECT * FROM employees";
+const getAllManagers = async () => {
+  const sql = "SELECT * FROM managers";
   return new Promise((resolve, reject) => {
     connection.query(sql, (error, results) => {
       if (error) return reject(error);
@@ -20,8 +20,8 @@ const getAllEmployees = async () => {
   });
 };
 
-const getEmployeeById = async (id) => {
-  const sql = "SELECT * FROM employees WHERE id = ?";
+const getManagerById = async (id) => {
+  const sql = "SELECT * FROM managers WHERE id = ?";
   return new Promise((resolve, reject) => {
     connection.query(sql, [id], (error, results) => {
       if (error) return reject(error);
@@ -30,30 +30,38 @@ const getEmployeeById = async (id) => {
   });
 };
 
-const updateEmployee = async (id, data) => {
-  const sql = "UPDATE employees SET ? WHERE id = ?";
+const getManagerByEmail = async (email) => {
+  const sql = "SELECT * FROM managers WHERE email = ?";
   return new Promise((resolve, reject) => {
-    connection.query(sql, [data, id], (error, results) => {
+    connection.query(sql, [email], (error, results) => {
       if (error) return reject(error);
-      resolve(results);
+      resolve(results[0]);
     });
   });
 };
 
-const deleteEmployee = async (id) => {
-  const sql = "DELETE FROM employees WHERE id = ?";
+
+const deleteManagerById = async (id) => {
+  const sql = "DELETE FROM managers WHERE id = ?";
   return new Promise((resolve, reject) => {
     connection.query(sql, [id], (error, results) => {
       if (error) return reject(error);
-      resolve(results);
+      resolve(results.affectedRows > 0);
     });
   });
 };
 
+
+const authService = {
+  
+
+
+}
+
 module.exports = {
-  createEmployee,
-  getAllEmployees,
-  getEmployeeById,
-  updateEmployee,
-  deleteEmployee
+  registerManager,
+  getAllManagers,
+  getManagerById,
+  deleteManagerById,
+  getManagerByEmail
 };
