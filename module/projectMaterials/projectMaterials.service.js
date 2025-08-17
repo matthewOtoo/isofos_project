@@ -2,12 +2,13 @@ const connection = require("../../config/DBconnect");
 
 const allocateMaterialToProject = async (data) => {
   const sql = "INSERT INTO project_materials SET ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, data, (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, data);
+    return results;
+  } catch (error) {
+    console.error('Error in allocateMaterialToProject:', error);
+    throw error;
+  }
 };
 
 const getProjectMaterials = async (projectId) => {
@@ -18,42 +19,46 @@ const getProjectMaterials = async (projectId) => {
     JOIN materials m ON pm.material_id = m.id
     WHERE pm.project_id = ?
   `;
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [projectId], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [projectId]);
+    return results;
+  } catch (error) {
+    console.error('Error in getProjectMaterials:', error);
+    throw error;
+  }
 };
 
 const updateProjectMaterialAllocation = async (id, data) => {
   const sql = "UPDATE project_materials SET ? WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [data, id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [data, id]);
+    return results;
+  } catch (error) {
+    console.error('Error in updateProjectMaterialAllocation:', error);
+    throw error;
+  }
 };
 
 const removeMaterialFromProject = async (id) => {
   const sql = "DELETE FROM project_materials WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results;
+  } catch (error) {
+    console.error('Error in removeMaterialFromProject:', error);
+    throw error;
+  }
 };
 
 const getMaterialAllocationById = async (id) => {
   const sql = "SELECT * FROM project_materials WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results[0]);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results[0] || null;
+  } catch (error) {
+    console.error('Error in getMaterialAllocationById:', error);
+    throw error;
+  }
 };
 
 module.exports = {

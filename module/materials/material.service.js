@@ -2,52 +2,57 @@ const connection = require("../../config/DBconnect");
 
 const createMaterial = async (data) => {
   const sql = "INSERT INTO materials SET ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, data, (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, data);
+    return results;
+  } catch (error) {
+    console.error('Error in createMaterial:', error);
+    throw error;
+  }
 };
 
 const getAllMaterials = async () => {
   const sql = "SELECT m.*, s.name as supplier_name FROM materials m JOIN suppliers s ON m.supplier_id = s.id";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql);
+    return results;
+  } catch (error) {
+    console.error('Error in getAllMaterials:', error);
+    throw error;
+  }
 };
 
 const getMaterialById = async (id) => {
   const sql = "SELECT m.*, s.name as supplier_name FROM materials m JOIN suppliers s ON m.supplier_id = s.id WHERE m.id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results[0]);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results[0] || null;
+  } catch (error) {
+    console.error('Error in getMaterialById:', error);
+    throw error;
+  }
 };
 
 const updateMaterial = async (id, data) => {
   const sql = "UPDATE materials SET ? WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [data, id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [data, id]);
+    return results;
+  } catch (error) {
+    console.error('Error in updateMaterial:', error);
+    throw error;
+  }
 };
 
 const deleteMaterial = async (id) => {
   const sql = "DELETE FROM materials WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results;
+  } catch (error) {
+    console.error('Error in deleteMaterial:', error);
+    throw error;
+  }
 };
 
 module.exports = {

@@ -2,12 +2,13 @@ const connection = require("../../config/DBconnect");
 
 const createProject = async (data) => {
   const sql = "INSERT INTO projects SET ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, data, (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, data);
+    return results;
+  } catch (error) {
+    console.error('Error in createProject:', error);
+    throw error;
+  }
 };
 
 const getAllProjects = async () => {
@@ -17,12 +18,13 @@ const getAllProjects = async () => {
     JOIN clients c ON p.client_id = c.id
     JOIN project_types pt ON p.project_type_id = pt.id
   `;
-  return new Promise((resolve, reject) => {
-    connection.query(sql, (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql);
+    return results;
+  } catch (error) {
+    console.error('Error in getAllProjects:', error);
+    throw error;
+  }
 };
 
 const getProjectById = async (id) => {
@@ -33,32 +35,35 @@ const getProjectById = async (id) => {
     JOIN project_types pt ON p.project_type_id = pt.id
     WHERE p.id = ?
   `;
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results[0]);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results[0] || null;
+  } catch (error) {
+    console.error('Error in getProjectById:', error);
+    throw error;
+  }
 };
 
 const updateProject = async (id, data) => {
   const sql = "UPDATE projects SET ? WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [data, id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [data, id]);
+    return results;
+  } catch (error) {
+    console.error('Error in updateProject:', error);
+    throw error;
+  }
 };
 
 const deleteProject = async (id) => {
   const sql = "DELETE FROM projects WHERE id = ?";
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [id], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [id]);
+    return results;
+  } catch (error) {
+    console.error('Error in deleteProject:', error);
+    throw error;
+  }
 };
 
 const getProjectsByStatus = async (status) => {
@@ -69,12 +74,13 @@ const getProjectsByStatus = async (status) => {
     JOIN project_types pt ON p.project_type_id = pt.id
     WHERE p.status = ?
   `;
-  return new Promise((resolve, reject) => {
-    connection.query(sql, [status], (error, results) => {
-      if (error) return reject(error);
-      resolve(results);
-    });
-  });
+  try {
+    const [results] = await connection.query(sql, [status]);
+    return results;
+  } catch (error) {
+    console.error('Error in getProjectsByStatus:', error);
+    throw error;
+  }
 };
 
 module.exports = {
