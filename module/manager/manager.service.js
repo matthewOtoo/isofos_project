@@ -11,6 +11,20 @@ const registerManager = async (data) => {
   }
 };
 
+const loginManager = async (email, password) => {
+  const sql = "SELECT * FROM managers WHERE email = ? AND password = ?";
+  try {
+    const [results] = await connection.query(sql, [email, password]);
+    if (results.length === 0) {
+      throw new Error('Invalid email or password');
+    }
+    return results[0] || null;
+  } catch (error) {
+    console.error('Error in loginManager:', error);
+    throw error;
+  }
+}
+
 const getAllManagers = async () => {
   const sql = "SELECT * FROM managers";
   try {

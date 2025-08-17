@@ -23,6 +23,22 @@ const registerManager = async (req, res) => {
   }
 };
 
+const loginManager = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required." });
+    }
+    const manager = await managerService.loginManager(email, password);
+    if (!manager) {
+      return res.status(401).json({ error: "Invalid email or password." });
+    }
+    res.status(200).json({ message: "Login successful", manager });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const getManagerById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -42,5 +58,6 @@ const getManagerById = async (req, res) => {
 module.exports = {
   getManagers,
   registerManager,
-  getManagerById
+  getManagerById,
+  loginManager
 };
