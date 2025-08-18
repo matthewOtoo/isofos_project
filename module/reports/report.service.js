@@ -76,9 +76,57 @@ const getInventoryValueReport = async () => {
     throw error;
   }
 };
+const totalProjects = async () => {
+  const sql = "SELECT COUNT(*) as total_projects FROM projects";
+  try {
+    const [[result]] = await connection.query(sql);
+    return result.total_projects;
+  } catch (error) {
+    console.error('Error in totalProjects:', error);
+    throw error;
+  }
+};
+
+const totalEmployees = async () => {
+  const sql = "SELECT COUNT(*) as total_employees FROM employees";
+  try {
+    const [[result]] = await connection.query(sql);
+    return result.total_employees;
+  } catch (error) {
+    console.error('Error in totalEmployees:', error);
+    throw error;
+  }
+};
+
+const totalSupliers = async () => {
+  const sql = "SELECT COUNT(*) as total_suppliers FROM suppliers";
+  try {
+    const [[result]] = await connection.query(sql);
+    return result.total_suppliers;
+  } catch (error) {
+    console.error('Error in totalSuppliers:', error);
+    throw error;
+  }
+};
+
+const totalClients = async () => {
+  const sql = "SELECT COUNT(*) as total_clients FROM clients";
+  try {
+    const [[result]] = await connection.query(sql);
+    return result.total_clients;
+  } catch (error) {
+    console.error('Error in totalClients:', error);
+    throw error;
+  }
+};
+
 
 module.exports = {
   getProjectCostReport,
   getEmployeeWorkloadReport,
-  getInventoryValueReport
+  getInventoryValueReport,
+  totalProjects,
+  totalEmployees,
+  totalSupliers,
+  totalClients
 };

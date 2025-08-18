@@ -3,10 +3,17 @@ const app = express();
 const dotenv = require("dotenv").config();
 const router = require("./module/index.js");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const port = process.env.PORT || 4500;
 app.use(morgan("dev"));
 app.use(express.json()); // <-- Add this line
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));// <-- Add this line
 app.use("/api", router);
 
 app.listen(port, () => {

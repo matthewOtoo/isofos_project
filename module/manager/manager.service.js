@@ -1,8 +1,20 @@
 const connection = require("../../config/DBconnect");
+const bcrypt = require("bcryptjs");
 
 const registerManager = async (data) => {
   const sql = "INSERT INTO managers SET ?";
   try {
+    // Hash the password before storing it
+    if (data.password) {
+      const salt = await bcrypt.genSalt(10);
+      data.password = await bcrypt.hash(data.password, salt);
+    }
+    // Check if the email already exists
+    const existingManager = await getManagerByEmail(data.email);
+    if (existingManager) {
+      throw new Error('Manager with this email already exists');
+    }
+    // Insert the manager data into the database
     const [results] = await connection.query(sql, data);
     return results;
   } catch (error) {
@@ -74,5 +86,6 @@ module.exports = {
   getAllManagers,
   getManagerById,
   deleteManagerById,
-  getManagerByEmail
+  getManagerByEmail,
+  loginManager
 };

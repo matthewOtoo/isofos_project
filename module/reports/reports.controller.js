@@ -31,8 +31,48 @@ const getInventoryValueReport = async (req, res) => {
   }
 };
 
+const totalProjects = async (req, res) => {
+  try {
+    const total = await reportService.totalProjects();
+    res.status(200).json({ total });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const totalEmployees = async (req, res) => {
+  try {
+    const total = await reportService.totalEmployees();
+    res.status(200).json({ total });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const totalSuppliers = async (req, res) => {
+  try {
+    const total = await reportService.totalSuppliers();
+    res.status(200).json({ total });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const totalClients = async (req, res) => {
+  try {
+    const total = await reportService.totalClients();
+    res.status(200).json({ total });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getProjectCostReport,
   getEmployeeWorkloadReport,
-  getInventoryValueReport
+  getInventoryValueReport,
+  totalProjects,
+  totalEmployees,
+  totalSuppliers,
+  totalClients  
 };
