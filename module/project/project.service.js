@@ -13,7 +13,7 @@ const createProject = async (data) => {
 
 const getAllProjects = async () => {
   const sql = `
-    SELECT p.*, c.name as client_name, pt.type_name as project_type 
+    SELECT p.*, c.name as client_name,c.email as client_email, c.phone as client_phone, pt.type_name as project_type 
     FROM projects p
     JOIN clients c ON p.client_id = c.id
     JOIN project_types pt ON p.project_type_id = pt.id
@@ -29,7 +29,7 @@ const getAllProjects = async () => {
 
 const getProjectById = async (id) => {
   const sql = `
-    SELECT p.*, c.name as client_name, pt.type_name as project_type 
+    SELECT p.*, c.name as client_name,c.email as client_email, c.phone as client_phone, pt.type_name as project_type 
     FROM projects p
     JOIN clients c ON p.client_id = c.id
     JOIN project_types pt ON p.project_type_id = pt.id

@@ -51,7 +51,7 @@ const totalEmployees = async (req, res) => {
 
 const totalSuppliers = async (req, res) => {
   try {
-    const total = await reportService.totalSuppliers();
+    const total = await reportService.totalSupliers();
     res.status(200).json({ total });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -43,6 +43,7 @@ const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
+    console.log(data)
     if (!id) {
       return res.status(400).json({ error: "Project ID is required." });
     }
