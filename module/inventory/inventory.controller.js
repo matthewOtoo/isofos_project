@@ -3,7 +3,7 @@ const inventoryService = require("./inventory.service");
 const getInventory = async (req, res) => {
   try {
     const inventory = await inventoryService.getInventory();
-    res.status(200).json({ inventory });
+    res.status(200).json(inventory);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
