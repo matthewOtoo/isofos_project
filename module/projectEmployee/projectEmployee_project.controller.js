@@ -1,3 +1,4 @@
+// controllers/projectEmployee.controller.js
 const projectEmployeeService = require("./projectEmployee_project.service");
 
 const assignEmployeeToProject = async (req, res) => {
@@ -6,26 +7,32 @@ const assignEmployeeToProject = async (req, res) => {
     if (!project_id || !employee_id) {
       return res.status(400).json({ error: "Project ID and employee ID are required." });
     }
+
     const data = { project_id, employee_id, role, start_date, end_date, salary_allocation };
+
+    // Insert assignment
     const result = await projectEmployeeService.assignEmployeeToProject(data);
-    res.status(201).json({ message: "Employee assigned to project successfully", result });
+
+    // Fetch the full joined employee record for the inserted row
+    const fullAssignment = await projectEmployeeService.getEmployeeAssignmentById(result.insertId);
+
+    res.status(201).json({ message: "Employee assigned to project successfully", assignment: fullAssignment });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-const getProjectEmployees = async (req, res) => {
+const getProjectEmployees = async(req, res)=>{
+  const { projectId } = req.params;
   try {
-    const { projectId } = req.params;
-    if (!projectId) {
-      return res.status(400).json({ error: "Project ID is required." });
-    }
-    const employees = await projectEmployeeService.getProjectEmployees(projectId);
-    res.status(200).json({ employees });
+    const employees = await projectEmployeeService.getProjectEmployees(Number(projectId));
+    res.json({ employees }); // ✅ matches frontend
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Error fetching employees" });
   }
-};
+}
+
 
 const updateEmployeeAssignment = async (req, res) => {
   try {
@@ -70,10 +77,20 @@ const getEmployeeAssignmentById = async (req, res) => {
   }
 };
 
+const getAllAssignedEmployees = async (req, res) => {
+  try {
+    const employees = await projectEmployeeService.getAllAssignedEmployees();
+    res.status(200).json({ employees });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   assignEmployeeToProject,
   getProjectEmployees,
   updateEmployeeAssignment,
   removeEmployeeFromProject,
-  getEmployeeAssignmentById
+  getEmployeeAssignmentById,
+  getAllAssignedEmployees
 };

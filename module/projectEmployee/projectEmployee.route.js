@@ -7,5 +7,6 @@ projectEmployeeRouter.get("/project/:projectId", projectEmployeeController.getPr
 projectEmployeeRouter.put("/:id", projectEmployeeController.updateEmployeeAssignment);
 projectEmployeeRouter.delete("/:id", projectEmployeeController.removeEmployeeFromProject);
 projectEmployeeRouter.get("/:id", projectEmployeeController.getEmployeeAssignmentById);
+projectEmployeeRouter.get("/", projectEmployeeController.getAllAssignedEmployees)
 
 module.exports = projectEmployeeRouter;

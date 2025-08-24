@@ -1,10 +1,11 @@
+// services/projectEmployee_project.service.js
 const connection = require("../../config/DBconnect");
 
 const assignEmployeeToProject = async (data) => {
   const sql = "INSERT INTO project_employees SET ?";
   try {
     const [results] = await connection.query(sql, data);
-    return results;
+    return results; // contains insertId
   } catch (error) {
     console.error('Error in assignEmployeeToProject:', error);
     throw error;
@@ -50,7 +51,12 @@ const removeEmployeeFromProject = async (id) => {
 };
 
 const getEmployeeAssignmentById = async (id) => {
-  const sql = "SELECT * FROM project_employees WHERE id = ?";
+  const sql = `
+    SELECT pe.*, e.first_name, e.last_name, e.position, e.base_salary
+    FROM project_employees pe
+    JOIN employees e ON pe.employee_id = e.id
+    WHERE pe.id = ?
+  `;
   try {
     const [results] = await connection.query(sql, [id]);
     return results[0] || null;
@@ -60,10 +66,29 @@ const getEmployeeAssignmentById = async (id) => {
   }
 };
 
+const getAllAssignedEmployees = async () => {
+  const sql = `
+    SELECT pe.*, 
+           e.first_name, e.last_name, e.position, e.base_salary,
+           p.name AS project_name, p.start_date, p.end_date
+    FROM project_employees pe
+    JOIN employees e ON pe.employee_id = e.id
+    JOIN projects p ON pe.project_id = p.id
+  `;
+  try {
+    const [results] = await connection.query(sql);
+    return results;
+  } catch (error) {
+    console.error('Error in getAllAssignedEmployees:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   assignEmployeeToProject,
   getProjectEmployees,
   updateEmployeeProjectAssignment,
   removeEmployeeFromProject,
-  getEmployeeAssignmentById
+  getEmployeeAssignmentById,
+  getAllAssignedEmployees
 };
